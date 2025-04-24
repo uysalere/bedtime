@@ -131,6 +131,4 @@ dist
 
 .vscode
 
-public/stories/
-
 .DS_Store
