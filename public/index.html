@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-960JDDS52W"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-960JDDS52W');
+    </script>
+    <title>Bedtime</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span class="tooltip">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                    </svg>
+                    <span class="tooltiptext">Unleash the magic of storytelling! AI weaves enchanting bedtime tales,
+                        personalized for your little ones. Sweet dreams
+                        guaranteed (and free).</span>
+                </span>
+                <a href="/bedtime">
+                    <h1 id="title">Bedtime</h1>
+                </a>
+            </div>
+
+            <select id="language" class="language-select">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="tr">Türkçe</option>
+                <option value="hi">हिन्दी</option>
+            </select>
+        </header>
+
+        <form id="storyForm" class="story-form">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="mainCharacter" id="labelMainCharacter">Main Character</label>
+                    <input type="text" id="mainCharacter" name="mainCharacter" required>
+                </div>
+                <div class="form-group">
+                    <label for="friends" id="labelFriends">Friends</label>
+                    <input type="text" id="friends" name="friends" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="topic" id="labelTopic">Story Topic</label>
+                <input type="text" id="topic" name="topic" required>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="location" id="labelLocation">Location</label>
+                    <input type="text" id="location" name="location" required>
+                </div>
+                <div class="form-group">
+                    <label for="age" id="labelAge">Age of Audience</label>
+                    <input type="number" id="age" name="age" min="0" max="80" value="5" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="labelExcitement">Excitement Level: <span id="excitementValue">50</span>%</label>
+                <input type="range" id="excitement" name="excitement" min="0" max="100" value="50">
+            </div>
+
+            <button type="submit" class="generate-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                    <path d="M5 3v4" />
+                    <path d="M19 17v4" />
+                    <path d="M3 5h4" />
+                    <path d="M17 19h4" />
+                </svg>
+                <span id="generateText">Create Magic!</span>
+            </button>
+        </form>
+
+        <div id="storyContainer" class="story-container hidden">
+            <h2 id="storyTitle">Your Magical Story</h2>
+            <p id="storyText"></p>
+            <button id="shareButton" class="share-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                    <polyline points="16 6 12 2 8 6" />
+                    <line x1="12" y1="2" x2="12" y2="15" />
+                </svg>
+                <span id="shareText">Share Story</span>
+            </button>
+        </div>
+    </div>
+
+    <footer>
+        <a href="https://uyslab.com" class="full-footer-link" aria-label="Go to uyslab homepage">
+            <p>&copy; 2025 uyslab</p>
+        </a>
+    </footer>
+
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>
