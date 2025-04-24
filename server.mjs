@@ -119,7 +119,7 @@ app.post('/save-story', (req, res) => {
                         personalized for your little ones. Sweet dreams
                         guaranteed (and free).</span>
                 </span>
-                <a href="/bedtime">
+                <a href="/">
                     <h1 id="title">Bedtime</h1>
                 </a>
             </div>
