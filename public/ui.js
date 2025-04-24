@@ -1,3 +1,5 @@
+// /Users/emircan/bedtime/public/ui.js
+
 export function updateUI(translations, language) {
     // Update all text content
     document.getElementById('title').textContent = translations[language].title;
@@ -6,11 +8,12 @@ export function updateUI(translations, language) {
     document.getElementById('labelTopic').textContent = translations[language].storyAbout;
     document.getElementById('labelLocation').textContent = translations[language].location;
     document.getElementById('labelAge').textContent = translations[language].age;
-    document.getElementById('labelExcitement').textContent = translations[language].excitement;
+
+    document.getElementById('labelExcitementText').textContent = translations[language].excitement;
+
     document.getElementById('generateText').textContent = translations[language].generate;
     document.getElementById('storyTitle').textContent = translations[language].yourStory;
     document.getElementById('shareText').textContent = translations[language].share;
-
 
     // Update placeholders
     document.getElementById('mainCharacter').placeholder = translations[language].mainCharacterPlaceholder;

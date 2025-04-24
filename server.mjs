@@ -9,7 +9,7 @@ import bodyParser from 'body-parser';
 const gemini_api_key = process.env.GEMINI_API_KEY;
 const googleAI = new GoogleGenerativeAI(gemini_api_key);
 const geminiModel = googleAI.getGenerativeModel({
-    model: "gemini-2.0-flash-thinking-exp-01-21",
+    model: "gemini-2.5-flash-preview-04-17",
 });
 
 const __filename = fileURLToPath(import.meta.url);
@@ -60,21 +60,45 @@ app.post('/generate-story', async (req, res) => {
 });
 
 function createBedtimePrompt(data) {
-    const mainCharacter = data.mainCharacter;
-    const friends = data.friends;
-    const topic = data.topic;
-    const location = data.location;
-    const age = data.age;
-    const excitement = data.excitement;
-    const language = data.language;
+    const { mainCharacter, friends, topic, location, age, excitement, language } = data;
+
+    // Determine language style guidance based on age
+    let languageStyleGuidance = '';
+    if (age <= 5) {
+        languageStyleGuidance = 'Use very simple words and short sentences. Keep the tone extremely gentle and reassuring. Focus on basic concepts and sensory details. Avoid anything remotely complex, scary, or ambiguous.';
+    } else if (age <= 9) {
+        languageStyleGuidance = 'Use clear, engaging language suitable for young school children. Introduce slightly more complex sentences but keep the vocabulary common. Themes should be straightforward and positive. Mild peril is okay if resolved quickly and gently.';
+    } else if (age <= 13) {
+        languageStyleGuidance = 'Use language appropriate for pre-teens/early teens. More complex sentence structures, richer vocabulary, and more nuanced themes (like friendship challenges, simple dilemmas) are suitable. The tone can be more adventurous or slightly mysterious, but still ultimately comforting.';
+    } else if (age < 18) { // Ages 14-17
+        languageStyleGuidance = 'Use language suitable for teenagers (14-17). Allow for complex vocabulary, nuanced themes, and a mature tone (e.g., introspection, complex relationships, moral ambiguity within reason). If fitting for the story and character, *mildly* stronger or more colloquial language appropriate for this age group can be included. Focus on relatability and engagement, while generally maintaining a tone suitable for winding down before sleep.';
+    } else { // Age 18+
+        languageStyleGuidance = `Use sophisticated language suitable for adults. Fully complex vocabulary, sentence structures, and mature/ M-rated themes (e.g., philosophical questions, complex relationships, social commentary, existential thoughts) are appropriate. The tone can range widely (dark, satirical, emotional, atmospheric, etc.). Contextually relevant adult language, including potentially **stronger language (profanity if appropriate)** or more intense/unsettling situations, may be used if they genuinely serve the narrative and requested excitement level. Aim for a thought-provoking or atmospheric story that can still function in a 'winding down' context, unless the topic/excitement dictates a more intense ending. Avoid gratuitous shock value unless specifically implied by the topic.`;
+    }
+
+    // Determine excitement guidance
+    const excitementDescription = excitement > 75 ? 'Include several twists, turns, and moments of high energy or suspense, using vivid and dynamic language.' :
+                                  excitement > 40 ? 'Maintain a good pace with some interesting events or mild challenges, using engaging language.' :
+                                  'Focus on a calm, gentle, and relaxing narrative with minimal conflict, using soothing and descriptive language.';
 
     return `
-    Write a bedtime story in ${language} for a ${age} year old, with an excitement level of ${excitement}/100.
-    The main character is ${mainCharacter}.
-    ${friends ? `Their friends are ${friends}.` : ''}
-    The story takes place in ${location}.
-    The story is about ${topic}.
-    Excitement level(not printed) higher to lower: more twists in the story with a more excited language to more mellow story that is slow.
+    Create a bedtime story in ${language} aimed at a ${age}-year-old.
+
+    **Story Core:**
+    - Main Character: ${mainCharacter}
+    ${friends ? `- Friends: ${friends}` : ''}
+    - Setting: ${location}
+    - Central Topic/Plot: ${topic}
+
+    **Style & Tone Guidance:**
+    - Language Style: ${languageStyleGuidance}
+    - Excitement Level (${excitement}/100): ${excitementDescription} Ensure the story winds down towards the end for bedtime.
+
+    **Instructions:**
+    - Weave the character(s), setting, and topic into a coherent narrative.
+    - Adapt the complexity, tone, vocabulary, and themes according to the age and specified language style.
+    - Adjust the story's pacing and intensity based on the excitement level, ensuring a calming conclusion suitable for sleep.
+    - Do not explicitly state the excitement level or age guidelines in the story itself.
     `;
 }
 
