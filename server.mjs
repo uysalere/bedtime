@@ -2,15 +2,17 @@ import express from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { GoogleGenerativeAI, GoogleGenerativeAIFetchError } from "@google/generative-ai";
+import {
+    GoogleGenAI,
+    HarmBlockMethod,
+    HarmBlockThreshold,
+    HarmCategory,
+} from "@google/genai";
 import fs from 'fs';
 import bodyParser from 'body-parser';
 
 const gemini_api_key = process.env.GEMINI_API_KEY;
-const googleAI = new GoogleGenerativeAI(gemini_api_key);
-const geminiModel = googleAI.getGenerativeModel({
-    model: "gemini-2.5-flash-preview-04-17",
-});
+const genAI = new GoogleGenAI({ vertexai: false, apiKey: gemini_api_key });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -39,11 +41,22 @@ app.post('/generate-story', async (req, res) => {
 
     try {
         const prompt = createBedtimePrompt(req.body);
-        const result = await geminiModel.generateContentStream(prompt);
+        const result = await genAI.models.generateContentStream({
+            model: 'gemini-2.0-flash',
+            contents: prompt,
+            config: {
+                safetySettings: [
+                    {
+                        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                        threshold: HarmBlockThreshold.BLOCK_NONE,
+                    },
+                ],
+            },
+        });
         let fullStory = '';
-        for await (const item of result.stream) {
-            if (item && item.candidates && item.candidates[0] && item.candidates[0].content && item.candidates[0].content.parts) {
-                fullStory += item.candidates[0].content.parts[0].text;
+        for await (const item of result) {
+            if (item && item.text) {
+                fullStory += item.text;
             } else {
                 console.error("Error: Unexpected response format from Gemini:", item);
                 // Handle the error appropriately, e.g., send an error response to the client
@@ -78,8 +91,8 @@ function createBedtimePrompt(data) {
 
     // Determine excitement guidance
     const excitementDescription = excitement > 75 ? 'Include several twists, turns, and moments of high energy or suspense, using vivid and dynamic language.' :
-                                  excitement > 40 ? 'Maintain a good pace with some interesting events or mild challenges, using engaging language.' :
-                                  'Focus on a calm, gentle, and relaxing narrative with minimal conflict, using soothing and descriptive language.';
+        excitement > 40 ? 'Maintain a good pace with some interesting events or mild challenges, using engaging language.' :
+            'Focus on a calm, gentle, and relaxing narrative with minimal conflict, using soothing and descriptive language.';
 
     return `
     Create a bedtime story in ${language} aimed at a ${age}-year-old.
