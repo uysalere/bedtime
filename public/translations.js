@@ -83,5 +83,22 @@ export const translations = {
         loading: 'लोड हो रहा है...',
         yourStory: 'आपकी जादुई कहानी',
         share: 'कहानी साझा करें'
+    },
+    it: {
+        title: 'Generatore di Storie',
+        mainCharacter: 'Personaggio Principale',
+        mainCharacterPlaceholder: 'es., Luna l\'Unicorno',
+        friends: 'Amici',
+        friendsPlaceholder: 'es., Drago Scintillante, Nuvola Arcobaleno',
+        storyAbout: 'Argomento della Storia',
+        storyAboutPlaceholder: 'es., Trovare un cristallo magico',
+        location: 'Luogo',
+        locationPlaceholder: 'es., Foresta Incantata',
+        age: 'Età del Pubblico',
+        excitement: 'Livello di Emozione',
+        generate: 'Crea Magia!',
+        loading: 'Caricamento in corso',
+        yourStory: 'La Tua Storia Magica',
+        share: 'Condividi Storia'
     }
 };

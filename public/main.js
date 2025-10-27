@@ -33,9 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Get the generate button and its original text
         const generateButton = document.getElementById('generateText');
-        const originalButtonText = generateButton.textContent;
-
-        const language = document.getElementById('language').value;
+        const languageSelect = document.getElementById('language');
+        const language = languageSelect.options[languageSelect.selectedIndex].text;
 
         try {
             // Change button text to "Loading..."
@@ -68,7 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Share button
     const shareButton = document.getElementById('shareButton');
     shareButton.addEventListener('click', async () => {
-        const language = document.getElementById('language').value; // Get the selected language
+        const languageSelect = document.getElementById('language');
+        const language = languageSelect.options[languageSelect.selectedIndex].text;
         const storyText = document.getElementById('storyText').textContent;
         shareButton.disabled = true; // Disable the button while processing
 
