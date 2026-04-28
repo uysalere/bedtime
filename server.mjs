@@ -17,6 +17,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const gemini_api_key = process.env.GEMINI_API_KEY;
+const maskedKey = `${gemini_api_key.substring(0, 4)}...${gemini_api_key.substring(gemini_api_key.length - 4)}`;
+console.log(`[Diagnostic] API_KEY found. Length: ${gemini_api_key.length}, Masked: ${maskedKey}, Node Version: ${process.version}`);
 const genAI = new GoogleGenAI({ apiKey: gemini_api_key });
 
 
