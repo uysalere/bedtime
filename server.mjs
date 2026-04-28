@@ -11,7 +11,7 @@ import {
 import fs from 'fs';
 import bodyParser from 'body-parser';
 
-dotenv.config();
+dotenv.config({ override: true });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
