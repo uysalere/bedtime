@@ -42,7 +42,7 @@ app.post('/generate-story', async (req, res) => {
     try {
         const prompt = createBedtimePrompt(req.body);
         const result = await genAI.models.generateContentStream({
-            model: 'gemini-2.0-flash',
+            model: 'gemini-flash-latest',
             contents: prompt,
             config: {
                 safetySettings: [
