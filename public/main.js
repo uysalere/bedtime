@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Get the generate button and its original text
         const generateButton = document.getElementById('generateText');
+        const shareButton = document.getElementById('shareButton');
+        const originalButtonText = generateButton.textContent;
         const languageSelect = document.getElementById('language');
         const language = languageSelect.options[languageSelect.selectedIndex].text;
 
@@ -51,10 +53,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
             });
 
+            if (!response.ok) {
+                throw new Error(`Server returned ${response.status}`);
+            }
+
             const result = await response.json();
             showStory(result.story);
         } catch (error) {
             console.error('Failed to generate story:', error);
+            alert('Failed to generate story. Please check the console for details.');
         } finally {
             // Revert button text back to the original
             generateButton.textContent = originalButtonText;
