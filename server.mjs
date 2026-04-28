@@ -11,13 +11,14 @@ import {
 import fs from 'fs';
 import bodyParser from 'body-parser';
 
-const gemini_api_key = process.env.GEMINI_API_KEY;
-const genAI = new GoogleGenAI({ vertexai: false, apiKey: gemini_api_key });
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config();
+const gemini_api_key = process.env.GEMINI_API_KEY;
+const genAI = new GoogleGenAI(gemini_api_key);
+
 
 const app = express();
 const port = 3002;
@@ -41,18 +42,17 @@ app.post('/generate-story', async (req, res) => {
 
     try {
         const prompt = createBedtimePrompt(req.body);
-        const result = await genAI.models.generateContentStream({
-            model: 'gemini-flash-latest',
-            contents: prompt,
-            config: {
-                safetySettings: [
-                    {
-                        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-                        threshold: HarmBlockThreshold.BLOCK_NONE,
-                    },
-                ],
-            },
+        const model = genAI.getGenerativeModel({
+            model: 'gemini-1.5-flash',
+            safetySettings: [
+                {
+                    category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                    threshold: HarmBlockThreshold.BLOCK_NONE,
+                },
+            ],
         });
+        const result = await model.generateContentStream(prompt);
+
         let fullStory = '';
         for await (const item of result) {
             if (item && item.text) {
